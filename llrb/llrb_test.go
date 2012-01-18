@@ -60,6 +60,48 @@ func TestReverseInsertOrder(t *testing.T) {
 	}
 }
 
+func TestUpperBound(t *testing.T) {
+	tree := New(IntLess)
+	n := 100
+	for i := 0; i < n; i+=2 {
+		tree.ReplaceOrInsert(i)
+	}
+	for i := 0; i < n-2; i++ {
+		v := tree.UpperBound(i).(int)
+		next := i + 1
+		if next % 2 == 1 {
+			next++
+		}
+		if v != next {
+			t.Fatalf("bad upper bound")
+		}
+	}
+	if tree.UpperBound(n) != nil {
+		t.Fatalf("shouldn't get an upper bound on max")
+	}
+}
+
+func TestLowerBound(t *testing.T) {
+	tree := New(IntLess)
+	n := 100
+	for i := 0; i < n; i+=2 {
+		tree.ReplaceOrInsert(i)
+	}
+	for i := 1; i < n; i++ {
+		v := tree.LowerBound(i).(int)
+		next := i - 1
+		if next % 2 == 1 {
+			next--
+		}
+		if v != next {
+			t.Fatalf("bad lower bound")
+		}
+	}
+	if tree.LowerBound(0) != nil {
+		t.Fatalf("shouldn't get a lower bound on min")
+	}
+}
+
 func TestRange(t *testing.T) {
 	tree := New(StringLess)
 	order := []string{

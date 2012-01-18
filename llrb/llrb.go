@@ -85,6 +85,68 @@ func (t *Tree) Get(key Item) Item {
 	return nil
 }
 
+// Returns the smallest element from the tree whose LessThan order
+// is greater than that of key.  Returns nil if key has LessThan order
+// less than or equal to that of the minimum element in the tree.
+func (t *Tree) UpperBound(key Item) Item {
+	h := t.root
+	var res Item
+	for h != nil {
+		// Keep track of the best result as we go down the tree
+		if t.less(key, h.Item) {
+			if res == nil || t.less(h.Item, res) {
+				res = h.Item
+			}
+		}
+
+		if t.less(key, h.Item) {
+			h = h.Left
+		} else if t.less(h.Item, key) {
+			h = h.Right
+		} else {
+			// If we found an exact match then we should find the smallest
+			// value in the right branch, this will be the upper bound.
+			h = h.Right
+			for h != nil {
+				res = h.Item
+				h = h.Left
+			}
+		}
+	}
+	return res
+}
+
+// Returns the largest element from the tree whose LessThan order
+// is less than that of key.  Returns nil if key has LessThan order
+// greater than or equal to that of the maximum element in the tree.
+func (t *Tree) LowerBound(key Item) Item {
+	h := t.root
+	var res Item
+	for h != nil {
+		// Keep track of the best result as we go down the tree
+		if t.less(h.Item, key) {
+			if res == nil || t.less(res, h.Item) {
+				res = h.Item
+			}
+		}
+
+		if t.less(key, h.Item) {
+			h = h.Left
+		} else if t.less(h.Item, key) {
+			h = h.Right
+		} else {
+			// If we found an exact match then we should find the largest
+			// value in the left branch, this will be the lower bound.
+			h = h.Left
+			for h != nil {
+				res = h.Item
+				h = h.Right
+			}
+		}
+	}
+	return res
+}
+
 // Min returns the minimum element in the tree.
 func (t *Tree) Min() Item {
 	h := t.root
