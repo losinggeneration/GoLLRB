@@ -63,13 +63,13 @@ func TestReverseInsertOrder(t *testing.T) {
 func TestUpperBound(t *testing.T) {
 	tree := New(IntLess)
 	n := 100
-	for i := 0; i < n; i+=2 {
+	for i := 0; i < n; i += 2 {
 		tree.ReplaceOrInsert(i)
 	}
 	for i := 0; i < n-2; i++ {
 		v := tree.UpperBound(i).(int)
 		next := i + 1
-		if next % 2 == 1 {
+		if next%2 == 1 {
 			next++
 		}
 		if v != next {
@@ -84,13 +84,13 @@ func TestUpperBound(t *testing.T) {
 func TestLowerBound(t *testing.T) {
 	tree := New(IntLess)
 	n := 100
-	for i := 0; i < n; i+=2 {
+	for i := 0; i < n; i += 2 {
 		tree.ReplaceOrInsert(i)
 	}
 	for i := 1; i < n; i++ {
 		v := tree.LowerBound(i).(int)
 		next := i - 1
-		if next % 2 == 1 {
+		if next%2 == 1 {
 			next--
 		}
 		if v != next {
